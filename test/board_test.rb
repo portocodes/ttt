@@ -11,6 +11,12 @@ class BoardTest < Minitest::Test
     @board.move(0,0).move(1,0).move(1,1).move(2,0).move(2,2)
   end
 
+  def drawing_board
+    @board.move(0,0).move(1,0).move(2,0).
+           move(0,2).move(1,2).move(2,2).
+           move(0,1).move(1,1).move(2,1)
+  end
+
   def test_creating_board
     @board
   end
@@ -73,5 +79,17 @@ class BoardTest < Minitest::Test
     assert_raises Ttt::CellTaken do
       @board.move(0,2).move(0,2)
     end
+  end
+
+  def test_not_finished
+    assert !@board.finished?
+  end
+
+  def test_finished_when_theres_a_winner
+    assert winning_board.finished?
+  end
+
+  def test_finished_when_no_more_moves
+    assert drawing_board.finished?
   end
 end

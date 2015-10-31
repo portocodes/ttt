@@ -40,8 +40,7 @@ module Ttt
     end
 
     def cell_at index
-      y=index/3
-      x=index%3
+      x,y = Utils.position_to_coordinates(index)
 
       @cells[y][x]
     end
@@ -65,6 +64,14 @@ module Ttt
       end
 
       w && w.first
+    end
+
+    def finished?
+      no_more_moves? || winner
+    end
+
+    def no_more_moves?
+      @cells.flatten.none? { |c| c == '.' }
     end
   end
 end

@@ -13,5 +13,9 @@ module Ttt
         end
       end
     end
+
+    def self.position_to_coordinates position
+      [position%3, position/3]
+    end
   end
 end
