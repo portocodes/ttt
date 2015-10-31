@@ -7,7 +7,7 @@ module Ttt
   class CellTaken < Exception
   end
 
-  class Board
+  class Game
     def initialize cells=nil
       @cells = cells || default
     end
@@ -24,7 +24,7 @@ module Ttt
       raise GameOver if winner
       raise CellTaken if cell_taken?(x,y)
 
-      Board.new Utils.replace(@cells, [y,x], current_player)
+      Game.new Utils.replace(@cells, [y,x], current_player)
     end
 
     def cell_taken? x,y

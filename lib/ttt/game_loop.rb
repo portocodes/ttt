@@ -1,17 +1,17 @@
-require 'ttt/board'
+require 'ttt/game'
 require 'ttt/board_printer'
 
 module Ttt
   class GameLoop
-    attr_reader :board
+    attr_reader :game
 
     def initialize
-      @board = Ttt::Board.new
+      @game = Ttt::Game.new
     end
 
     def run
-      until board.finished?
-        print_board
+      until game.finished?
+        print_game
 
         move = prompt_move
 
@@ -22,26 +22,26 @@ module Ttt
         end
       end
 
-      print_board
+      print_game
       print_result
     end
 
     def prompt_move
-      puts "Player #{board.current_player} [1-9]:"
+      puts "Player #{game.current_player} [1-9]:"
 
       Ttt::Utils.position_to_coordinates(gets.chomp.to_i - 1)
     end
 
     def make_move move
-      @board = board.move move[0], move[1]
+      @game = game.move move[0], move[1]
     end
 
-    def print_board
-      puts BoardPrinter.new(board)
+    def print_game
+      puts BoardPrinter.new(game)
     end
 
     def print_result
-      winner = board.winner
+      winner = game.winner
 
       if winner
         puts "Player #{winner} wins!"
