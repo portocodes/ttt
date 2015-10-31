@@ -17,7 +17,7 @@ module Ttt
 
         begin
           make_move move
-        rescue Ttt::CellTaken
+        rescue
           puts "Invalid move! Try again."
         end
       end

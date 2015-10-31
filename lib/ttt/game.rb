@@ -7,6 +7,9 @@ module Ttt
   class CellTaken < Exception
   end
 
+  class InvalidMove < Exception
+  end
+
   class Game
     def initialize cells=nil
       @cells = cells || default
@@ -23,12 +26,17 @@ module Ttt
     def move x, y
       raise GameOver if winner
       raise CellTaken if cell_taken?(x,y)
+      raise InvalidMove if !valid_move?(x,y)
 
       Game.new Utils.replace(@cells, [y,x], current_player)
     end
 
     def cell_taken? x,y
       @cells[y][x] != '.'
+    end
+
+    def valid_move? x,y
+      (0..2).include?(x) && (0..2).include?(y)
     end
 
     def current_player
