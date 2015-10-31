@@ -15,15 +15,43 @@ module Ttt
     end
 
     def move x, y
-      Board.new Utils.replace(@cells, [x,y], current_player)
+      Board.new Utils.replace(@cells, [y,x], current_player)
     end
 
     def current_player
-      if @cells.flatten.count('x').even?
+      if @cells.flatten.count('.').odd?
         'x'
       else
         'o'
       end
+    end
+
+    def cell_at index
+      y=index/3
+      x=index%3
+
+      @cells[y][x]
+    end
+
+    def winner
+      winning_states = [
+        [0,1,2],
+        [3,4,5],
+        [6,7,8],
+        [0,3,6],
+        [1,4,7],
+        [2,5,8],
+        [0,4,8],
+        [2,4,6]
+      ]
+
+      w = winning_states.map do |state|
+        state.map { |p| cell_at p }.uniq
+      end.find do |moves|
+        moves.size == 1 && moves[0] != '.'
+      end
+
+      w && w.first
     end
   end
 end
