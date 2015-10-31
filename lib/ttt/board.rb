@@ -1,6 +1,12 @@
 require 'ttt/utils'
 
 module Ttt
+  class GameOver < Exception
+  end
+
+  class CellTaken < Exception
+  end
+
   class Board
     def initialize cells=nil
       @cells = cells || default
@@ -15,7 +21,14 @@ module Ttt
     end
 
     def move x, y
+      raise GameOver if winner
+      raise CellTaken if cell_taken?(x,y)
+
       Board.new Utils.replace(@cells, [y,x], current_player)
+    end
+
+    def cell_taken? x,y
+      @cells[y][x] != '.'
     end
 
     def current_player

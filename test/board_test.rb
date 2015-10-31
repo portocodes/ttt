@@ -7,8 +7,12 @@ class BoardTest < Minitest::Test
     @board = Ttt::Board.new
   end
 
+  def winning_board
+    @board.move(0,0).move(1,0).move(1,1).move(2,0).move(2,2)
+  end
+
   def test_creating_board
-    Ttt::Board.new
+    @board
   end
 
   def test_to_string
@@ -20,32 +24,27 @@ class BoardTest < Minitest::Test
   end
 
   def test_current_player
-    assert_equal 'x', Ttt::Board.new.current_player
+    assert_equal 'x', @board.current_player
   end
 
   def test_current_player_after_move
-    assert_equal 'o', Ttt::Board.new.move(0,0).current_player
+    assert_equal 'o', @board.move(0,0).current_player
   end
 
   def test_current_player_after_two_moves
-    assert_equal 'x', Ttt::Board.new.move(0,0).move(1,1).current_player
+    assert_equal 'x', @board.move(0,0).move(1,1).current_player
   end
 
   def test_second_move
-    assert_equal "xo.\n...\n...\n", Ttt::Board.new.move(0,0).move(1,0).to_s
+    assert_equal "xo.\n...\n...\n", @board.move(0,0).move(1,0).to_s
   end
 
   def test_winning_move
-    assert_equal "xoo\n.x.\n..x\n", Ttt::Board.new.
-                                      move(0,0).
-                                      move(1,0).
-                                      move(1,1).
-                                      move(2,0).
-                                      move(2,2).to_s
+    assert_equal "xoo\n.x.\n..x\n", winning_board.to_s
   end
 
   def test_no_winner
-    assert_equal nil, Ttt::Board.new.winner
+    assert_equal nil, @board.winner
   end
 
   def test_cell_at
@@ -57,12 +56,22 @@ class BoardTest < Minitest::Test
   end
 
   def test_first_player_wins
-    assert_equal 'x', Ttt::Board.new.
-                        move(0,0).
-                        move(0,1).
-                        move(1,1).
-                        move(0,2).
-                        move(2,2).
-                        winner
+    assert_equal 'x', winning_board.winner
+  end
+
+  def test_move_after_game_is_finished
+    assert_raises Ttt::GameOver do
+      winning_board.move(0,0)
+    end
+  end
+
+  def test_move_on_moved_move
+    assert_raises Ttt::CellTaken do
+      @board.move(0,0).move(0,0)
+    end
+
+    assert_raises Ttt::CellTaken do
+      @board.move(0,2).move(0,2)
+    end
   end
 end
