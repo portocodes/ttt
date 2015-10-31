@@ -2,7 +2,7 @@ require 'ttt/board'
 require 'ttt/board_printer'
 
 module Ttt
-  class Game
+  class GameLoop
     attr_reader :board
 
     def initialize
@@ -15,7 +15,11 @@ module Ttt
 
         move = prompt_move
 
-        make_move move
+        begin
+          make_move move
+        rescue Ttt::CellTaken
+          puts "Invalid move! Try again."
+        end
       end
 
       print_board

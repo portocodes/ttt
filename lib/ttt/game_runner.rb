@@ -1,3 +1,3 @@
-require 'ttt/game'
+require 'ttt/game_loop'
 
-Ttt::Game.new.run
+Ttt::GameLoop.new.run
