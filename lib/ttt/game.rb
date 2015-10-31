@@ -1,4 +1,5 @@
 require 'ttt/board'
+require 'ttt/board_printer'
 
 module Ttt
   class Game
@@ -9,7 +10,7 @@ module Ttt
     end
 
     def run
-      puts board
+      print_board
       until board.finished?
 
         puts "Player #{board.current_player} [1-9]:"
@@ -18,7 +19,7 @@ module Ttt
 
         @board = board.move(move[0], move[1])
 
-        puts board
+        print_board
       end
 
       winner = board.winner
@@ -28,6 +29,10 @@ module Ttt
       else
         puts "It's a draw!"
       end
+    end
+
+    def print_board
+      puts BoardPrinter.new(board)
     end
   end
 end
